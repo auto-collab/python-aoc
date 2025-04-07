@@ -9,32 +9,28 @@ def solution():
 
     levels = 0
     for i in reports:
-        levels += is_safe_ascend(i)
-        levels += is_safe_descend(i)
+        levels += safe_report(i)
 
-    print(safe_report(reports))
+    print(f'Total safe reports:', levels)
 
-def safe_report(reports):
-    levels = 0
-    for i in reports:
-        levels += is_safe_ascend(i)
-        levels += is_safe_descend(i)
-    return levels
+def safe_report(report):
+    diff = report[1] - report[0]
 
-def is_safe_ascend(ascend_list):
-    for i in range(len(ascend_list) - 1):
-        diff = ascend_list[i + 1] - ascend_list[i]
-        if not (1 <= diff <= 3):
+    # Omit flat values
+    if diff == 0:
+        return 0
+
+    direction = "ascend" if diff > 0 else "descend"
+
+    for i in report:
+
+        if direction == "ascend" and not (1 <= diff <= 3):
             return 0
-    return 1
 
-
-def is_safe_descend(ascend_list):
-    for i in range(len(ascend_list) - 1):
-        diff = ascend_list[i] - ascend_list[i + 1]
-        if not (1 <= diff <= 3):
+        if direction == "descend" and not (-3 <= diff <= -1):
             return 0
-    return 1
+
+        return 1
 
 
 if __name__ == '__main__':
